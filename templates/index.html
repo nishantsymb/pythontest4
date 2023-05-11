@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% include "header.html" %}
+{% block head %}
+<title>CONTACTS</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class="mt-4 p-3 bg-light bg-gradient rounded">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-sm-4">
+                        <h2><b></b>My Contacts</b></h2>
+                    </div>
+                    <div class="col-sm-4">
+                        <form action="" method="Post" autocomplete="on">
+                            <div class="d-flex justify-content-right">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" name="tag" id="tag"
+                                        placeholder="Enter keyword" />
+                                </div>
+                                <div class="col-3 mx-2">
+                                    <input type="submit" value="Search" class="form-control btn btn-success " name="">
+                                </div>
+                        </form>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#myModal">Add</button>
+                    </div>
+                </div>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
+                        aria-label="close"></button>
+                </div>
+
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <table class="table table-hover table-info" id="myTable">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for user in contact %}
+                    <tr>
+                        <td>{{user.id}}</td>
+                        <td>{{user.name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.phone}}</td>
+                        <td>
+                            <a href="/update/{{user.id}}" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#modalEdit{{user.id}}"><i class="bi bi-pencil"></i></a>
+                            <a href="/delete/{{user.id}}" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure to delete?')"><i class="bi bi-trash3"></i></a>
+                        </td>
+                    </tr>
+
+                    <!-- The Edit Contact Modal -->
+                    <div class="modal fade" id="modalEdit{{user.id}}" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Update Contact</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{url_for('update')}}" method="POST" id="myForm">
+                                        <div class="form-label">
+                                            <label>Name:</label>
+                                            <input type="hidden" name="id" value="{{user.id}}">
+                                            <input type="text" class="form-control" name="name" value="{{user.name}}"
+                                                required>
+                                        </div>
+                                        <div class="form-label">
+                                            <label>Email:</label>
+                                            <input type="email" class="form-control" name="email" value="{{user.email}}"
+                                                required>
+                                        </div>
+                                        <div class="form-label">
+                                            <label>Phone Number:</label>
+                                            <input type="number" class="form-control" name="phone"
+                                                value="{{user.phone}}" required>
+                                        </div>
+                                        <div class="form-label">
+                                            <button class="btn btn-primary" type="submit">Update</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </table>
+            </div>
+            <!-- The Add Contact Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add Contact</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{url_for('insert')}}" method="POST" id="myForm">
+                                <div class="form-label">
+                                    <label>Name:</label>
+                                    <input type="text" class="form-control" name="name" required="1">
+                                </div>
+                                <div class="form-label">
+                                    <label>Email:</label>
+                                    <input type="email" class="form-control" name="email" required="1">
+                                </div>
+                                <div class="form-label">
+                                    <label>Phone Number:</label>
+                                    <input type="number" class="form-control" name="phone" required="1">
+                                </div>
+                                <div class="form-label">
+                                    <button class="btn btn-primary" type="submit">Add Contact</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
