@@ -10,7 +10,6 @@ from sqlalchemy.orm.attributes import get_history
 from sqlalchemy import inspect
 
 app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI']='postgresql://codeash:Rux7mY8OqJSWHHVNEzw4cy4eiSqANsVn@dpg-cg5nnqhmbg53u2rjpna0-a.singapore-postgres.render.com/testdb_f4ng'
 app.config['SQLALCHEMY_DATABASE_URI']='postgresql://pythontest_user:5qCFcvnYqljdujZ8hUSe7h9C5ztQP5VR@dpg-ch8h6flgk4q7lmqelp10-a.oregon-postgres.render.com/pythontest'
 app.secret_key="secret key"
 db = SQLAlchemy(app)
