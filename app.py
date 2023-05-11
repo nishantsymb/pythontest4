@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
 from datetime import datetime
+import phonenumbers, sys
+
 # Import for Migrations
 # from flask_migrate import Migrate
 import re
@@ -23,6 +25,7 @@ def validemail(email):
 def validphone(phone):
     regexPhone = r"(0|91)?[6-9][0-9]{9}"
     return True if re.fullmatch(regexPhone,phone) else False
+
 
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,9 +68,6 @@ def before_contact_update(mapper, connection, target):
 
     except Exception as e:
         print(e,"in event listener")
-
-
-
 
 @db.event.listens_for(Contact, 'after_delete')
 def before_contact_delete(mapper, connection, target):
@@ -113,10 +113,10 @@ def insert():
         email=request.form['email']
         phone=request.form['phone']
         try:
-            if not validemail:
+            if not validemail(email):
                 flash('Enter valid email address!')
                 return redirect(url_for('index'))
-            elif not validphone:
+            elif not validphone(phone):
                 flash('Enter valid phone number!')
                 return redirect(url_for('index'))
             else:
@@ -168,7 +168,5 @@ def delete(id):
 with app.app_context():
     db.create_all()
 
-
-
-# if __name__=="__main__":
-#     app.run(debug=True)
+if __name__=="__main__":
+     app.run(debug=True)
