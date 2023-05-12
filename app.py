@@ -100,7 +100,7 @@ def index():
     all_contacts=Contact.query.all()
     if request.method=='POST' and 'tag' in request.form:
         tag=request.form['tag']
-        search="{}%".format(tag)
+        search="%{}%".format(tag)
         search_contact=Contact.query.filter(or_(Contact.name.like(search),Contact.email.like(search)))
         return render_template('index.html',contact=search_contact)
     else:
